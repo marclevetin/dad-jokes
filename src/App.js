@@ -23,7 +23,6 @@ class App extends Component {
                         })
       .then(response => response.text())
       .then(body => {
-                      debugger;
                       const jokes = JSON.parse(body)
                       this.setState({ jokes: jokes.results })
                     })
@@ -60,10 +59,17 @@ class App extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.searchForJokes();
+    this.setState({
+      searchTerm: ''
+    })
+  }
+
+  refreshPage = () => {
+    window.location.reload()
   }
 
   render() {
-    const jokesArray = (this.state.jokes) ? this.state.jokes.map(joke => <p key={joke.id} >{joke.joke}</p>) : '';
+    const jokesArray = (this.state.jokes) ? this.state.jokes.map(joke => <p key={joke.id} >{joke.joke}</p>) : <p>{this.state.joke}</p>;
 
     return (
       <div className="App">
@@ -72,15 +78,14 @@ class App extends Component {
           <h1 className="App-title">Dad Joke Engine</h1>
         </header>
 
-        <p>
-          {this.state.joke}
-        </p>
+        <h1>Jokes!</h1>
+        <button onClick={this.refreshPage}>Get a random joke</button>
+        {jokesArray}
+        <h2>Search for a joke</h2>
         <form onSubmit={this.handleSubmit}>
           <input type='text' onChange={this.handleChange} value={this.state.searchTerm}/>
-          <button type='submit'>Give me another!</button>
+          <button type='submit'>Search</button>
         </form>
-        <h1>search results</h1>
-        {jokesArray}
       </div>
     );
   }
