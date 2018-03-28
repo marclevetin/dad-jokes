@@ -64,30 +64,31 @@ class App extends Component {
   }
 
   render() {
-    const allJokes = this.state.combo.map(joke => <p key={joke.id}>{joke.joke}</p>);
+    const allJokes = this.state.combo.map(joke => <Card key={joke.id}>{joke.joke}</Card>);
+    // const allJokes = this.state.combo.map(joke => <p key={joke.id}>{joke.joke}</p>);
 
     return (
       <div className = "container" >
         <div className="row">
-        <header className="App-header">
-          <h1 className="App-title">Dad Joke Engine</h1>
-        </header>
+          <nav>
+            <div className="nav-wrapper">
+              <a className="brand-logo center">Dad Joke Engine</a>
+            </div>
+          </nav>
       </div>
-      <div className="row">
-      <div className="col s12">
-        <h1>Jokes!</h1>
-      </div>
-    </div>
     <div className="row">
       <div className="col s12 m6">
         <h2>Random hilarity</h2>
-        <button onClick={() => this.combinedJoke(this.state.searchTerm)}>Get a Random Joke</button>
+        <button className="btn waves-effect waves-light" onClick={() => this.combinedJoke(this.state.searchTerm)}>Get a Random Joke</button>
       </div>
       <div className="col s12 m6">
         <h2>Search for a joke</h2>
         <form onSubmit={this.handleSubmit}>
-          <input type='text' onChange={this.handleChange} value={this.state.searchTerm}/>
-          <button type='submit'>Search</button>
+          <div className="input-field">
+          <input id="search" className="input-field" type='text' onChange={this.handleChange} value={this.state.searchTerm}/>
+          <label htmlFor="search">Search term</label>
+          </div>
+          <button className="btn waves-effect waves-light" type='submit'>Search</button>
         </form>
       </div>
     </div>
@@ -99,6 +100,16 @@ class App extends Component {
       </div>
     );
   }
+}
+
+const Card = props => {
+  return(
+      <div className="card blue-grey darken-1">
+        <div className="card-content white-text flow-text">
+          <i className="material-icons">tag_faces</i> {props.children}
+        </div>
+      </div>
+    )
 }
 
 export default App;
