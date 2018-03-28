@@ -3,53 +3,46 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  state = {
-    joke: 'Finding a dad joke',
-    jokes: '',
-    searchTerm: ''
-  }
+  constructor(props) {
+    super(props)
 
-  searchForJokes = () => {
-    const searchTerm = this.state.searchTerm
-    fetch(`https://icanhazdadjoke.com/search?term=${searchTerm}`, { headers: { 'Accept': 'application/json' } })
-      .then(response => {
-                          if (response.ok) {
-                            return response;
-                          } else {
-                            let errorMessage = `${response.status} (${response.statusText})`,
-                              error = new Error(errorMessage);
-                            throw (error);
-                          }
-                        })
-      .then(response => response.text())
-      .then(body => {
-                      const jokes = JSON.parse(body)
-                      this.setState({ jokes: jokes.results })
-                    })
-      .catch(error => console.error(`Error in fetch: ${error.message}`));
-  }
+    this.state = {
+      searchTerm: '',
+      combo: [{id: 1, joke: ''}]
+    }
 
-  fetchSingleJoke = () => {
-    fetch('https://icanhazdadjoke.com/', { headers: { 'Accept': 'application/json' } })
-      .then(response => {
-                          if (response.ok) {
-                            return response;
-                          } else {
-                            let errorMessage = `${response.status} (${response.statusText})`,
-                              error = new Error(errorMessage);
-                            throw (error);
-                          }
-                        })
-      .then(response => response.text())
-      .then(body => {
-                      const joke = JSON.parse(body)
-                      this.setState({ joke: joke.joke })
-                    })
-      .catch(error => console.error(`Error in fetch: ${error.message}`));
+    this.combinedJoke = this.combinedJoke.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    this.fetchSingleJoke();
+    this.combinedJoke();
+  }
+
+  combinedJoke = (term) => {
+    const url = (term) ? `https://icanhazdadjoke.com/search?term=${term}` : 'https://icanhazdadjoke.com/';
+    fetch(url, { headers: { 'Accept': 'application/json' } })
+      .then(response => {
+                          if (response.ok) {
+                            return response;
+                          } else {
+                            let errorMessage = `${response.status} (${response.statusText})`,
+                              error = new Error(errorMessage);
+                            throw (error);
+                          }
+                        })
+      .then(response => response.text())
+      .then(body => {
+                      const jokes = JSON.parse(body);
+                      const allJokes = (jokes.results) ? jokes.results : [{id: 1, joke: jokes.joke}];
+
+                      this.setState({
+                        combo: allJokes,
+                        searchTerm: ''
+                      });
+                    })
+      .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
   handleChange = (event) => {
@@ -58,18 +51,11 @@ class App extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.searchForJokes();
-    this.setState({
-      searchTerm: ''
-    })
-  }
-
-  refreshPage = () => {
-    window.location.reload()
+    this.combinedJoke(this.state.searchTerm);
   }
 
   render() {
-    const jokesArray = (this.state.jokes) ? this.state.jokes.map(joke => <p key={joke.id} >{joke.joke}</p>) : <p>{this.state.joke}</p>;
+    const allJokes = this.state.combo.map(joke => <p key={joke.id} >{joke.joke}</p>);
 
     return (
       <div className="App">
@@ -79,13 +65,15 @@ class App extends Component {
         </header>
 
         <h1>Jokes!</h1>
-        <button onClick={this.refreshPage}>Get a random joke</button>
-        {jokesArray}
+        <h2>Random hilarity</h2>
+        <button onClick={() => this.combinedJoke(this.state.searchTerm)}>Get a Random Joke</button>
         <h2>Search for a joke</h2>
         <form onSubmit={this.handleSubmit}>
           <input type='text' onChange={this.handleChange} value={this.state.searchTerm}/>
           <button type='submit'>Search</button>
         </form>
+
+        {allJokes}
       </div>
     );
   }
