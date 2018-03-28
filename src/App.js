@@ -66,20 +66,38 @@ class App extends Component {
   render() {
     const allJokes = this.state.combo.map(joke => <p key={joke.id}>{joke.joke}</p>);
 
-    return (<div className="App">
-      <header className="App-header">
-        <h1 className="App-title">Dad Joke Engine</h1>
-      </header>
-          <h1>Jokes!</h1>
-          <h2>Random hilarity</h2>
-          <button onClick={() => this.combinedJoke(this.state.searchTerm)}>Get a Random Joke</button>
-          <h2>Search for a joke</h2>
-          <form onSubmit={this.handleSubmit}>
-            <input type='text' onChange={this.handleChange} value={this.state.searchTerm}/>
-            <button type='submit'>Search</button>
-          </form>
-          {allJokes}
-    </div>);
+    return (
+      <div className = "container" >
+        <div className="row">
+        <header className="App-header">
+          <h1 className="App-title">Dad Joke Engine</h1>
+        </header>
+      </div>
+      <div className="row">
+      <div className="col s12">
+        <h1>Jokes!</h1>
+      </div>
+    </div>
+    <div className="row">
+      <div className="col s12 m6">
+        <h2>Random hilarity</h2>
+        <button onClick={() => this.combinedJoke(this.state.searchTerm)}>Get a Random Joke</button>
+      </div>
+      <div className="col s12 m6">
+        <h2>Search for a joke</h2>
+        <form onSubmit={this.handleSubmit}>
+          <input type='text' onChange={this.handleChange} value={this.state.searchTerm}/>
+          <button type='submit'>Search</button>
+        </form>
+      </div>
+    </div>
+    <div className="row">
+      <div className="col s12">
+        {allJokes}
+      </div>
+    </div>
+      </div>
+    );
   }
 }
 
