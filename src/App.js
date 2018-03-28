@@ -89,7 +89,7 @@ class App extends Component {
         <div className="row">
           <nav>
             <div className="nav-wrapper blue">
-              <a className="brand-logo center">Dad Joke Engine</a>
+              <a className="brand-logo center">Dad Jokes</a>
             </div>
           </nav>
       </div>
@@ -132,14 +132,14 @@ const Card = props => {
 
 const RandomJokeContainer = props => (
     <React.Fragment>
-  <h2>Random hilarity</h2>
+  <h2>Random</h2>
   <button className="btn waves-effect waves-light blue darken-3" onClick={() => props.combinedJoke(props.searchTerm)}>Get a Random Joke</button>
 </React.Fragment>
 )
 
 const SearchJokeContainer = props => (
   <React.Fragment>
-  <h2>Search for a joke</h2>
+  <h2>Search</h2>
   <form onSubmit={props.handleSubmit}>
     <div className="input-field">
     <input id="search" className="input-field" type='text' onChange={props.handleChange} value={props.searchTerm}/>
