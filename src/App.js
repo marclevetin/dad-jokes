@@ -11,7 +11,8 @@ class App extends Component {
           id: 1,
           joke: 'Fetching a dad joke'
         }
-      ]
+      ],
+      toggle: true
     }
 
     this.combinedJoke = this.combinedJoke.bind(this);
@@ -63,33 +64,50 @@ class App extends Component {
     this.combinedJoke(this.state.searchTerm);
   }
 
+  toggleSwitch = (event) => {
+    const currentState = this.state.toggle;
+    this.setState({
+      toggle: !currentState
+    })
+  }
+
   render() {
     const allJokes = this.state.combo.map(joke => <Card key={joke.id}>{joke.joke}</Card>);
-    // const allJokes = this.state.combo.map(joke => <p key={joke.id}>{joke.joke}</p>);
+    const jokeForm = (this.state.toggle)
+                        ? <RandomJokeContainer
+                            combinedJoke={this.combinedJoke}
+                            searchTerm={this.state.searchTerm}
+                          />
+                        : <SearchJokeContainer
+                            handleChange={this.handleChange}
+                            handleSubmit={this.handleSubmit}
+                            searchTerm={this.state.searchTerm}
+                          />
 
     return (
       <div className = "container" >
         <div className="row">
           <nav>
-            <div className="nav-wrapper">
+            <div className="nav-wrapper blue">
               <a className="brand-logo center">Dad Joke Engine</a>
             </div>
           </nav>
       </div>
     <div className="row">
-      <div className="col s12 m6">
-        <h2>Random hilarity</h2>
-        <button className="btn waves-effect waves-light" onClick={() => this.combinedJoke(this.state.searchTerm)}>Get a Random Joke</button>
-      </div>
-      <div className="col s12 m6">
-        <h2>Search for a joke</h2>
-        <form onSubmit={this.handleSubmit}>
-          <div className="input-field">
-          <input id="search" className="input-field" type='text' onChange={this.handleChange} value={this.state.searchTerm}/>
-          <label htmlFor="search">Search term</label>
-          </div>
-          <button className="btn waves-effect waves-light" type='submit'>Search</button>
-        </form>
+      <div className="col s12 center-align">
+      <div className="switch">
+        <label>
+          Random
+          <input type="checkbox" value={this.state.toggle} onChange={this.toggleSwitch}/>
+            <span className="lever"></span>
+            Search
+        </label>
+        </div>
+    </div>
+    </div>
+    <div className="row">
+      <div className="col s12 center-align">
+        {jokeForm}
       </div>
     </div>
     <div className="row">
@@ -104,12 +122,33 @@ class App extends Component {
 
 const Card = props => {
   return(
-      <div className="card blue-grey darken-1">
+      <div className="card blue darken-1">
         <div className="card-content white-text flow-text">
           <i className="material-icons">tag_faces</i> {props.children}
         </div>
       </div>
     )
 }
+
+const RandomJokeContainer = props => (
+    <React.Fragment>
+  <h2>Random hilarity</h2>
+  <button className="btn waves-effect waves-light blue darken-3" onClick={() => props.combinedJoke(props.searchTerm)}>Get a Random Joke</button>
+</React.Fragment>
+)
+
+const SearchJokeContainer = props => (
+  <React.Fragment>
+  <h2>Search for a joke</h2>
+  <form onSubmit={props.handleSubmit}>
+    <div className="input-field">
+    <input id="search" className="input-field" type='text' onChange={props.handleChange} value={props.searchTerm}/>
+    <label htmlFor="search">Search term</label>
+    </div>
+    <button className="btn waves-effect waves-light blue darken-3" type='submit'>Search</button>
+  </form>
+</React.Fragment>
+)
+
 
 export default App;
