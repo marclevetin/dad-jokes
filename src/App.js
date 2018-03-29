@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Container, Row, Column, Nav, Card } from './m-components'
+import { Container, Nav } from './m-components'
 
 import SwitchContainer from './components/SwitchContainer';
 import AllJokesContainer from './components/AllJokesContainer';
