@@ -58,8 +58,8 @@ class App extends Component {
     const allJokes = this.state.combo.map(joke => <Card key={joke.id}>{joke.joke}</Card>);
     const jokeForm = (this.state.toggle)
                         ? <RandomJokeContainer
-                            combinedJoke={this.combinedJoke}
                             searchTerm={''}
+                            combinedJoke={this.combinedJoke}
                           />
                         : <SearchJokeContainer
                             handleSubmit={this.handleSubmit}
