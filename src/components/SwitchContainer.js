@@ -19,10 +19,10 @@ class SwitchContainer extends Component {
   render() {
     const jokeForm = (this.state.toggle)
                         ? <RandomJokeContainer
-                            combinedJoke={this.props.combinedJoke}
+                            fetchJokes={this.props.fetchJokes}
                           />
                         : <SearchJokeContainer
-                            combinedJoke={this.props.combinedJoke}
+                            fetchJokes={this.props.fetchJokes}
                           />;
 
     return(
