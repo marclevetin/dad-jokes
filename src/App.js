@@ -40,7 +40,9 @@ class App extends Component {
   render() {
     return (
       <Container>
-        <Nav title="Dad Jokes"></Nav>
+        <Nav
+          title="Dad Jokes"
+        />
         <SwitchContainer
           fetchJokes={this.fetchJokes}
         />
