@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Row, Column, Switch } from '../m-components';
+import { Row, Column, Switch, Card } from '../m-components';
 
 import RandomJokeContainer from './RandomJokeContainer';
 import SearchJokeContainer from './SearchJokeContainer';
-import AllJokesContainer from './AllJokesContainer';
+import AllJokes from './AllJokes';
 
 class SwitchContainer extends Component {
   state = {
@@ -55,6 +55,8 @@ class SwitchContainer extends Component {
                             fetchJokes={this.fetchJokes}
                           />;
 
+    const allJokes = this.state.allJokes.map(joke => <Card key={joke.id}>{joke.joke}</Card>);
+
     return(
       <React.Fragment>
         <Row>
@@ -68,8 +70,8 @@ class SwitchContainer extends Component {
             {jokeForm}
           </Column>
         </Row>
-        <AllJokesContainer
-          allJokes={this.state.allJokes}
+        <AllJokes
+          allJokes={allJokes}
         />
       </React.Fragment>
     )
