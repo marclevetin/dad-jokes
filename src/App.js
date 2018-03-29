@@ -1,29 +1,19 @@
 import React, {Component} from 'react';
-import { Container, Row, Column, Nav, Switch, Card } from './m-components'
+import { Container, Row, Column, Nav, Card } from './m-components'
 
-import RandomJokeContainer from './components/RandomJokeContainer';
-import SearchJokeContainer from './components/SearchJokeContainer';
 import SwitchContainer from './components/SwitchContainer';
+import AllJokesContainer from './components/AllJokesContainer';
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      combo: [{
-                id: 1,
-                joke: 'Fetching a dad joke'
-              }]
-    }
-
-    this.combinedJoke = this.combinedJoke.bind(this);
+  state = {
+      allJokes: [{ id: 1, joke: 'Fetching a dad joke'}]
   }
 
   componentDidMount() {
-    this.combinedJoke();
+    this.fetchJokes();
   }
 
-  combinedJoke = (term) => {
+  fetchJokes = (term) => {
     const url = (term) ? `https://icanhazdadjoke.com/search?term=${term}` : 'https://icanhazdadjoke.com/';
 
     fetch(url, { headers: { 'Accept': 'application/json' }})
@@ -41,26 +31,24 @@ class App extends Component {
         const allJokes = (jokes.results) ? jokes.results : [{ id: 1, joke: jokes.joke }];
 
         this.setState({
-          combo: allJokes
+          allJokes: allJokes
         });
       })
       .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
   render() {
-    const allJokes = this.state.combo.map(joke => <Card key={joke.id}>{joke.joke}</Card>);
-
     return (
       <Container>
-        <Nav title="Dad Jokes"></Nav>
-        <SwitchContainer
-          combinedJoke={this.combinedJoke}
+        <Nav
+          title="Dad Jokes"
         />
-        <Row>
-          <Column styles={'s12'}>
-            {allJokes}
-          </Column>
-        </Row>
+        <SwitchContainer
+          fetchJokes={this.fetchJokes}
+        />
+        <AllJokesContainer
+          allJokes={this.state.allJokes}
+        />
       </Container>
     );
   }
