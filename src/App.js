@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Container, Row, Column, Nav, Switch, Card } from './m-components'
 
 class App extends Component {
   constructor(props) {
@@ -6,12 +7,10 @@ class App extends Component {
 
     this.state = {
       searchTerm: '',
-      combo: [
-        {
-          id: 1,
-          joke: 'Fetching a dad joke'
-        }
-      ],
+      combo: [{
+                id: 1,
+                joke: 'Fetching a dad joke'
+              }],
       toggle: true
     }
 
@@ -25,38 +24,34 @@ class App extends Component {
   }
 
   combinedJoke = (term) => {
-    const url = (term)
-      ? `https://icanhazdadjoke.com/search?term=${term}`
-      : 'https://icanhazdadjoke.com/';
-    fetch(url, {
-      headers: {
-        'Accept': 'application/json'
-      }
-    }).then(response => {
-      if (response.ok) {
-        return response;
-      } else {
-        let errorMessage = `${response.status} (${response.statusText})`,
-          error = new Error(errorMessage);
-        throw(error);
-      }
-    }).then(response => response.text()).then(body => {
-      const jokes = JSON.parse(body);
-      const allJokes = (jokes.results)
-        ? jokes.results
-        : [
-          {
-            id: 1,
-            joke: jokes.joke
-          }
-        ];
+    const url = (term) ? `https://icanhazdadjoke.com/search?term=${term}` : 'https://icanhazdadjoke.com/';
 
-      this.setState({combo: allJokes, searchTerm: ''});
-    }).catch(error => console.error(`Error in fetch: ${error.message}`));
+    fetch(url, { headers: { 'Accept': 'application/json' }})
+      .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          let errorMessage = `${response.status} (${response.statusText})`,
+            error = new Error(errorMessage);
+          throw(error);
+        }
+      })
+      .then(response => response.text()).then(body => {
+        const jokes = JSON.parse(body);
+        const allJokes = (jokes.results) ? jokes.results : [{ id: 1, joke: jokes.joke }];
+
+        this.setState({
+          combo: allJokes,
+          searchTerm: ''
+        });
+      })
+      .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
   handleChange = (event) => {
-    this.setState({searchTerm: event.target.value});
+    this.setState({
+      searchTerm: event.target.value
+    });
   }
 
   handleSubmit = (event) => {
@@ -112,50 +107,6 @@ class App extends Component {
   }
 }
 
-const Container = props => (
-  <div className="container">
-    {props.children}
-  </div>
-)
-
-const Row = props => (
-  <div className="row">
-    {props.children}
-  </div>
-)
-
-const Column = props => (
-  <div className={"col" + props.styles}>
-    {props.children}
-  </div>
-)
-
-const Nav = props => (
-  <nav>
-    <div className="nav-wrapper blue">
-      <a className="brand-logo center">{props.title}</a>
-    </div>
-  </nav>
-)
-
-const Switch = props => (
-  <div className="switch">
-    <label>
-      {props.on}
-        <input type="checkbox" value={props.value} onChange={props.onChange}/>
-        <span className="lever"></span>
-      {props.off}
-    </label>
-  </div>
-)
-
-const Card = props => (
-  <div className="card blue darken-1">
-    <div className="card-content white-text flow-text">
-      <i className="material-icons">tag_faces</i> {props.children}
-    </div>
-  </div>
-)
 
 const RandomJokeContainer = props => (
     <React.Fragment>
@@ -176,6 +127,8 @@ const SearchJokeContainer = props => (
     </form>
   </React.Fragment>
 )
+
+
 
 
 export default App;
