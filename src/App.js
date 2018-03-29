@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import { Container, Row, Column, Nav, Card } from './m-components'
 
 import SwitchContainer from './components/SwitchContainer';
+import AllJokesContainer from './components/AllJokesContainer';
 
 class App extends Component {
   state = {
-      combo: [{ id: 1, joke: 'Fetching a dad joke'}]
+      allJokes: [{ id: 1, joke: 'Fetching a dad joke'}]
   }
 
   componentDidMount() {
@@ -30,26 +31,22 @@ class App extends Component {
         const allJokes = (jokes.results) ? jokes.results : [{ id: 1, joke: jokes.joke }];
 
         this.setState({
-          combo: allJokes
+          allJokes: allJokes
         });
       })
       .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
   render() {
-    const allJokes = this.state.combo.map(joke => <Card key={joke.id}>{joke.joke}</Card>);
-
     return (
       <Container>
         <Nav title="Dad Jokes"></Nav>
         <SwitchContainer
           fetchJokes={this.fetchJokes}
         />
-        <Row>
-          <Column styles={'s12'}>
-            {allJokes}
-          </Column>
-        </Row>
+        <AllJokesContainer
+          allJokes={this.state.allJokes}
+        />
       </Container>
     );
   }
