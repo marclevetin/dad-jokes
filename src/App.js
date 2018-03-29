@@ -3,6 +3,7 @@ import { Container, Row, Column, Nav, Switch, Card } from './m-components'
 
 import RandomJokeContainer from './components/RandomJokeContainer';
 import SearchJokeContainer from './components/SearchJokeContainer';
+import SwitchContainer from './components/SwitchContainer';
 
 class App extends Component {
   constructor(props) {
@@ -12,8 +13,7 @@ class App extends Component {
       combo: [{
                 id: 1,
                 joke: 'Fetching a dad joke'
-              }],
-      toggle: true
+              }]
     }
 
     this.combinedJoke = this.combinedJoke.bind(this);
@@ -56,34 +56,13 @@ class App extends Component {
 
   render() {
     const allJokes = this.state.combo.map(joke => <Card key={joke.id}>{joke.joke}</Card>);
-    const jokeForm = (this.state.toggle)
-                        ? <RandomJokeContainer
-                            searchTerm={''}
-                            combinedJoke={this.combinedJoke}
-                          />
-                        : <SearchJokeContainer
-                            handleSubmit={this.handleSubmit}
-                            combinedJoke={this.combinedJoke}
-                          />
 
     return (
       <Container>
         <Nav title="Dad Jokes"></Nav>
-        <Row>
-          <Column styles={'s12 center-align'}>
-            <Switch
-              on='Random'
-              off='Search'
-              value={this.state.toggle}
-              onChange={this.toggleSwitch}
-            />
-          </Column>
-        </Row>
-        <Row>
-          <Column styles={'s12 center-align'}>
-            {jokeForm}
-          </Column>
-        </Row>
+        <SwitchContainer
+          combinedJoke={this.combinedJoke}
+        />
         <Row>
           <Column styles={'s12'}>
             {allJokes}
