@@ -47,13 +47,6 @@ class App extends Component {
       .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
-  toggleSwitch = (event) => {
-    const currentState = this.state.toggle;
-    this.setState({
-      toggle: !currentState
-    })
-  }
-
   render() {
     const allJokes = this.state.combo.map(joke => <Card key={joke.id}>{joke.joke}</Card>);
 
