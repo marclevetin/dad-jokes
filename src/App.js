@@ -85,69 +85,96 @@ class App extends Component {
                           />
 
     return (
-      <div className = "container" >
-        <div className="row">
-          <nav>
-            <div className="nav-wrapper blue">
-              <a className="brand-logo center">Dad Jokes</a>
-            </div>
-          </nav>
-      </div>
-    <div className="row">
-      <div className="col s12 center-align">
-      <div className="switch">
-        <label>
-          Random
-          <input type="checkbox" value={this.state.toggle} onChange={this.toggleSwitch}/>
-            <span className="lever"></span>
-            Search
-        </label>
-        </div>
-    </div>
-    </div>
-    <div className="row">
-      <div className="col s12 center-align">
-        {jokeForm}
-      </div>
-    </div>
-    <div className="row">
-      <div className="col s12">
-        {allJokes}
-      </div>
-    </div>
-      </div>
+      <Container>
+        <Nav title="Dad Jokes"></Nav>
+        <Row>
+          <Column styles={'s12 center-align'}>
+            <Switch
+              on='Random'
+              off='Search'
+              value={this.state.toggle}
+              onChange={this.toggleSwitch}
+            />
+          </Column>
+        </Row>
+        <Row>
+          <Column styles={'s12 center-align'}>
+            {jokeForm}
+          </Column>
+        </Row>
+        <Row>
+          <Column styles={'s12'}>
+            {allJokes}
+          </Column>
+        </Row>
+      </Container>
     );
   }
 }
 
-const Card = props => {
-  return(
-      <div className="card blue darken-1">
-        <div className="card-content white-text flow-text">
-          <i className="material-icons">tag_faces</i> {props.children}
-        </div>
-      </div>
-    )
-}
+const Container = props => (
+  <div className="container">
+    {props.children}
+  </div>
+)
+
+const Row = props => (
+  <div className="row">
+    {props.children}
+  </div>
+)
+
+const Column = props => (
+  <div className={"col" + props.styles}>
+    {props.children}
+  </div>
+)
+
+const Nav = props => (
+  <nav>
+    <div className="nav-wrapper blue">
+      <a className="brand-logo center">{props.title}</a>
+    </div>
+  </nav>
+)
+
+const Switch = props => (
+  <div className="switch">
+    <label>
+      {props.on}
+        <input type="checkbox" value={props.value} onChange={props.onChange}/>
+        <span className="lever"></span>
+      {props.off}
+    </label>
+  </div>
+)
+
+const Card = props => (
+  <div className="card blue darken-1">
+    <div className="card-content white-text flow-text">
+      <i className="material-icons">tag_faces</i> {props.children}
+    </div>
+  </div>
+)
 
 const RandomJokeContainer = props => (
     <React.Fragment>
-  <h2>Random</h2>
-  <button className="btn waves-effect waves-light blue darken-3" onClick={() => props.combinedJoke(props.searchTerm)}>Get a Random Joke</button>
-</React.Fragment>
+      <h2>Random</h2>
+      <button className="btn waves-effect waves-light blue darken-3" onClick={() => props.combinedJoke(props.searchTerm)}>Get a Random Joke</button>
+    </React.Fragment>
 )
 
 const SearchJokeContainer = props => (
   <React.Fragment>
-  <h2>Search</h2>
-  <form onSubmit={props.handleSubmit}>
-    <div className="input-field">
-    <input id="search" className="input-field" type='text' onChange={props.handleChange} value={props.searchTerm}/>
-    <label htmlFor="search">Search term</label>
-    </div>
-    <button className="btn waves-effect waves-light blue darken-3" type='submit'>Search</button>
-  </form>
-</React.Fragment>
+    <h2>Search</h2>
+    <form onSubmit={props.handleSubmit}>
+      <div className="input-field">
+      <input id="search" className="input-field" type='text' onChange={props.handleChange} value={props.searchTerm}/>
+      <label htmlFor="search">Search term</label>
+      </div>
+      <button className="btn waves-effect waves-light blue darken-3" type='submit'>Search</button>
+    </form>
+  </React.Fragment>
 )
 
 
