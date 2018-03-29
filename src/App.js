@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import { Container, Row, Column, Nav, Switch, Card } from './m-components'
 
+import RandomJokeContainer from './components/RandomJokeContainer';
+import SearchJokeContainer from './components/SearchJokeContainer';
+
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      searchTerm: '',
       combo: [{
                 id: 1,
                 joke: 'Fetching a dad joke'
@@ -15,8 +17,6 @@ class App extends Component {
     }
 
     this.combinedJoke = this.combinedJoke.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -41,22 +41,10 @@ class App extends Component {
         const allJokes = (jokes.results) ? jokes.results : [{ id: 1, joke: jokes.joke }];
 
         this.setState({
-          combo: allJokes,
-          searchTerm: ''
+          combo: allJokes
         });
       })
       .catch(error => console.error(`Error in fetch: ${error.message}`));
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      searchTerm: event.target.value
-    });
-  }
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-    this.combinedJoke(this.state.searchTerm);
   }
 
   toggleSwitch = (event) => {
@@ -71,12 +59,11 @@ class App extends Component {
     const jokeForm = (this.state.toggle)
                         ? <RandomJokeContainer
                             combinedJoke={this.combinedJoke}
-                            searchTerm={this.state.searchTerm}
+                            searchTerm={''}
                           />
                         : <SearchJokeContainer
-                            handleChange={this.handleChange}
                             handleSubmit={this.handleSubmit}
-                            searchTerm={this.state.searchTerm}
+                            combinedJoke={this.combinedJoke}
                           />
 
     return (
@@ -106,29 +93,5 @@ class App extends Component {
     );
   }
 }
-
-
-const RandomJokeContainer = props => (
-    <React.Fragment>
-      <h2>Random</h2>
-      <button className="btn waves-effect waves-light blue darken-3" onClick={() => props.combinedJoke(props.searchTerm)}>Get a Random Joke</button>
-    </React.Fragment>
-)
-
-const SearchJokeContainer = props => (
-  <React.Fragment>
-    <h2>Search</h2>
-    <form onSubmit={props.handleSubmit}>
-      <div className="input-field">
-      <input id="search" className="input-field" type='text' onChange={props.handleChange} value={props.searchTerm}/>
-      <label htmlFor="search">Search term</label>
-      </div>
-      <button className="btn waves-effect waves-light blue darken-3" type='submit'>Search</button>
-    </form>
-  </React.Fragment>
-)
-
-
-
 
 export default App;
