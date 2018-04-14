@@ -27,7 +27,6 @@ class App extends Component {
         }
       })
       .then(response => response.text()).then(body => {
-        debugger;
         const jokes = JSON.parse(body);
         let allJokes = []
         if (jokes.search_term === undefined) {
