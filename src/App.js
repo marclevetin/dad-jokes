@@ -27,8 +27,20 @@ class App extends Component {
         }
       })
       .then(response => response.text()).then(body => {
+        debugger;
         const jokes = JSON.parse(body);
-        const allJokes = (jokes.results) ? jokes.results : [{ id: 1, joke: jokes.joke }];
+        let allJokes = []
+        if (jokes.search_term === undefined) {
+          // if undefined, then the fetch must have looked for a random joke
+          // when using the search parameter, a blank or empty term returns a response in the search format
+          allJokes = [{ id: 1, joke: jokes.joke }];
+        } else if (jokes.search_term !== undefined && jokes.results.length === 0) {
+          // empty results means an empty message should appear.
+          allJokes = [{ id: 1, joke: "No results were found.  Try again." }];
+        } else if (jokes.search_term !== undefined && jokes.results.length !== 0) {
+          // must have gotten results than can be shown.
+          allJokes = jokes.results;
+        }
 
         this.setState({
           allJokes: allJokes
